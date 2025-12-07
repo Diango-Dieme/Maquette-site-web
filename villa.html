@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Découvrez la villa Azur à Cap Skirring - Hébergement luxueux avec piscine, plage privée et services haut de gamme">
+    <title>Villa Azur - Découvrez notre villa à Cap Skirring</title>
+    <style>
+        :root {
+            --bleu-fonce: #0d2b4e;
+            --bleu-clair: #3a7bc8;
+            --sable: #e6d5b8;
+            --blanc: #f8f8f8;
+            --noir: #1a1a1a;
+            --taupe: #b8a98a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.6;
+            color: var(--noir);
+            background-color: var(--blanc);
+            overflow-x: hidden;
+        }
+
+        .no-scroll {
+            overflow: hidden;
+            height: 100%;
+        }
+
+        .conteneur {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        /* En-tête */
+        .en-tete {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .en-tete.scroll {
+            padding: 15px 0;
+            box-shadow: 0 5px 30px rgba(0,0,0,0.1);
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        .logo {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--bleu-fonce);
+            letter-spacing: 2px;
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Menu Hamburger */
+        .menu-hamburger {
+            display: none;
+            width: 30px;
+            height: 25px;
+            flex-direction: column;
+            justify-content: space-between;
+            cursor: pointer;
+            z-index: 1002;
+        }
+
+        .menu-hamburger span {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background: var(--bleu-fonce);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .menu-hamburger.open span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .menu-hamburger.open span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-hamburger.open span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        /* Navigation Desktop */
+        .menu-navigation {
+            display: flex;
+            list-style: none;
+            gap: 35px;
+        }
+
+        .lien-menu {
+            text-decoration: none;
+            color: var(--noir);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+            position: relative;
+        }
+
+        .lien-menu:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--bleu-clair);
+            transition: width 0.3s ease;
+        }
+
+        .lien-menu:hover:after {
+            width: 100%;
+        }
+
+        .lien-menu:hover {
+            color: var(--bleu-clair);
+        }
+
+        /* Navigation Mobile */
+        .nav-mobile {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 80%;
+            max-width: 350px;
+            height: 100vh;
+            background: var(--blanc);
+            box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+            z-index: 1001;
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 100px 30px 30px;
+            overflow-y: auto;
+        }
+
+        .nav-mobile.open {
+            right: 0;
+        }
+
+        .menu-mobile {
+            list-style: none;
+        }
+
+        .lien-mobile {
+            display: block;
+            padding: 15px 0;
+            text-decoration: none;
+            color: var(--bleu-fonce);
+            font-weight: 500;
+            font-size: 1.1rem;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .lien-mobile:hover {
+            color: var(--bleu-clair);
+            padding-left: 10px;
+        }
+
+        .lien-mobile.active {
+            color: var(--bleu-clair);
+            font-weight: 600;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .bouton-reservation {
+            padding: 12px 28px;
+            border: 2px solid var(--bleu-clair);
+            background: transparent;
+            color: var(--bleu-clair);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            border-radius: 30px;
+        }
+
+        .bouton-reservation:hover {
+            background: var(--bleu-clair);
+            color: var(--blanc);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(74, 137, 199, 0.3);
+        }
+
+        /* Hero Section */
+        .hero-villa {
+            margin-top: 80px;
+            height: 60vh;
+            min-height: 500px;
+            background: linear-gradient(rgba(26, 58, 95, 0.7), rgba(26, 58, 95, 0.3)), 
+                        url('https://images.unsplash.com/photo-1584132967334-10e028bd69f7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--blanc);
+        }
+
+        .titre-hero {
+            font-size: 4rem;
+            font-weight: 300;
+            letter-spacing: 8px;
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .sous-titre-hero {
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            font-weight: 300;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Section Architecture */
+        .section-architecture {
+            padding: 100px 0;
+            background: var(--blanc);
+        }
+
+        .titre-section {
+            font-size: 2.8rem;
+            text-align: center;
+            margin-bottom: 80px;
+            color: var(--bleu-fonce);
+            font-weight: 300;
+            font-family: 'Playfair Display', serif;
+            letter-spacing: 3px;
+            position: relative;
+        }
+
+        .titre-section:after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 2px;
+            background: var(--bleu-clair);
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .contenu-architecture {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+            margin-bottom: 60px;
+        }
+
+        .texte-architecture {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--noir);
+        }
+
+        .texte-architecture p {
+            margin-bottom: 25px;
+        }
+
+        .image-architecture {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            border-radius: 5px;
+            box-shadow: 0 25px 50px -15px rgba(0,0,0,0.2);
+        }
+
+        /* Section Chambres */
+        .section-chambres {
+            padding: 100px 0;
+            background: #f9f9f9;
+        }
+
+        .liste-chambres {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .chambre {
+            background: var(--blanc);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px -10px rgba(0,0,0,0.1);
+            transition: all 0.4s ease;
+        }
+
+        .chambre:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 40px -10px rgba(0,0,0,0.15);
+        }
+
+        .image-chambre {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .details-chambre {
+            padding: 30px;
+        }
+
+        .titre-chambre {
+            font-size: 1.5rem;
+            color: var(--bleu-fonce);
+            margin-bottom: 15px;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .description-chambre {
+            color: var(--noir);
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .equipements-chambre {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .equipement-chambre {
+            background: rgba(74, 137, 199, 0.1);
+            color: var(--bleu-fonce);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .bouton-chambre {
+            display: inline-block;
+            padding: 10px 25px;
+            background: var(--bleu-clair);
+            color: var(--blanc);
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .bouton-chambre:hover {
+            background: var(--bleu-fonce);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(26, 58, 95, 0.2);
+        }
+
+        /* Section Cuisine */
+        .section-cuisine {
+            padding: 100px 0;
+            background: var(--blanc);
+        }
+
+        .contenu-cuisine {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .galerie-cuisine {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .image-cuisine {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 5px;
+            transition: all 0.4s ease;
+            box-shadow: 0 15px 30px -10px rgba(0,0,0,0.1);
+        }
+
+        .image-cuisine:hover {
+            transform: scale(1.05);
+        }
+
+        .image-cuisine.principale {
+            grid-column: span 2;
+            height: 300px;
+        }
+
+        .texte-cuisine {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--noir);
+        }
+
+        .texte-cuisine p {
+            margin-bottom: 25px;
+        }
+
+        /* Section Espaces */
+        .section-espaces {
+            padding: 100px 0;
+            background: #f9f9f9;
+        }
+
+        .grille-espaces {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .espace {
+            position: relative;
+            height: 350px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px -10px rgba(0,0,0,0.1);
+        }
+
+        .image-espace {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .espace:hover .image-espace {
+            transform: scale(1.1);
+        }
+
+        .overlay-espace {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(26, 58, 95, 0.8), transparent);
+            padding: 30px;
+            color: var(--blanc);
+        }
+
+        .titre-espace {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Footer */
+        .pied-page {
+            background: var(--bleu-fonce);
+            color: var(--blanc);
+            padding: 80px 0 40px;
+            text-align: center;
+        }
+
+        .logo-footer {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--blanc);
+            margin-bottom: 40px;
+            font-family: 'Playfair Display', serif;
+            letter-spacing: 2px;
+        }
+
+        .menu-footer {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            gap: 30px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .lien-footer {
+            text-decoration: none;
+            color: rgba(255,255,255,0.7);
+            font-weight: 400;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+        }
+
+        .lien-footer:hover {
+            color: var(--blanc);
+        }
+
+        .copyright {
+            margin-top: 60px;
+            color: rgba(255,255,255,0.5);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .titre-hero {
+                font-size: 3.5rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .conteneur {
+                padding: 0 30px;
+            }
+
+            .contenu-architecture,
+            .contenu-cuisine {
+                grid-template-columns: 1fr;
+                gap: 50px;
+            }
+
+            .image-architecture {
+                height: 400px;
+                order: -1;
+            }
+
+            .grille-espaces {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .menu-navigation {
+                display: none;
+            }
+
+            .menu-hamburger {
+                display: flex;
+            }
+
+            .titre-hero {
+                font-size: 2.8rem;
+                letter-spacing: 5px;
+            }
+
+            .titre-section {
+                font-size: 2.2rem;
+            }
+
+            .grille-espaces {
+                grid-template-columns: 1fr;
+            }
+
+            .espace {
+                height: 300px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .conteneur {
+                padding: 0 20px;
+            }
+
+            .titre-hero {
+                font-size: 2.2rem;
+                letter-spacing: 3px;
+            }
+
+            .sous-titre-hero {
+                font-size: 1rem;
+            }
+
+            .hero-villa {
+                min-height: 400px;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- En-tête -->
+    <header class="en-tete" id="header">
+        <div class="conteneur">
+            <nav class="navigation">
+                <!-- Menu Hamburger -->
+                <div class="menu-hamburger" id="menuHamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <div class="logo">Villa Azur</div>
+                
+                <!-- Navigation Desktop -->
+                <ul class="menu-navigation">
+                    <li><a href="index.html" class="lien-menu">Accueil</a></li>
+                    <li><a href="villa.html" class="lien-menu">La Villa</a></li>
+                    <li><a href="galerie.html" class="lien-menu active">Galerie</a></li>
+                    <li><a href="service.html" class="lien-menu">Services</a></li>
+                    <li><a href="tarifs.html" class="lien-menu">Tarifs</a></li>
+                    <li><a href="contact.html" class="lien-menu">Contact</a></li>
+                </ul>
+                <a href="reservation.html" class="bouton-reservation">Réservez</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Overlay -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Navigation Mobile -->
+    <nav class="nav-mobile" id="navMobile">
+        <ul class="menu-mobile">
+            <li><a href="index.html" class="lien-mobile">Accueil</a></li>
+            <li><a href="villa.html" class="lien-mobile active">La Villa</a></li>
+            <li><a href="galerie.html" class="lien-mobile ">Galerie</a></li>
+            <li><a href="service.html" class="lien-mobile">Services</a></li>
+            <li><a href="tarifs.html" class="lien-mobile">Tarifs</a></li>
+            <li><a href="contact.html" class="lien-mobile">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-villa">
+        <div class="conteneur">
+            <div>
+                <h1 class="titre-hero">LA VILLA</h1>
+                <p class="sous-titre-hero">Découvrez l'exceptionnelle villa Azur à Cap Skirring</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Architecture -->
+    <section class="section-architecture">
+        <div class="conteneur">
+            <h2 class="titre-section">ARCHITECTURE</h2>
+            
+            <div class="contenu-architecture">
+                <div class="texte-architecture">
+                    <p>Conçue par l'architecte renommé Jean-Luc Durand, la villa Azur allie harmonieusement l'élégance contemporaine et les traditions architecturales locales. Ses lignes épurées et ses volumes généreux s'intègrent parfaitement dans le paysage sauvage de Cap Skirring.</p>
+                    
+                    <p>La villa s'étend sur 450m² avec des matériaux nobles : pierres locales, bois exotique et béton ciré. Les grandes baies vitrées coulissantes permettent une ouverture totale sur l'extérieur et créent une fluidité entre les espaces intérieurs et le jardin tropical.</p>
+                    
+                    <p>Le toit-terrasse végétalisé offre une isolation naturelle tout en intégrant la villa dans son environnement. L'architecture bioclimatique assure un confort optimal toute l'année.</p>
+                </div>
+                
+                <div>
+                    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Architecture de la villa" class="image-architecture" loading="lazy" width="1350" height="900">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Chambres -->
+    <section class="section-chambres">
+        <div class="conteneur">
+            <h2 class="titre-section">NOS CHAMBRES</h2>
+            
+            <div class="liste-chambres">
+                <div class="chambre">
+                    <img src="https://images.unsplash.com/photo-1565538810643-b5bdb714032a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Suite Principale" class="image-chambre" loading="lazy" width="1350" height="900">
+                    <div class="details-chambre">
+                        <h3 class="titre-chambre">Suite Principale</h3>
+                        <p class="description-chambre">35m² avec lit king size, dressing et salle de bain en marbre avec baignoire freestanding et douche à l'italienne. Vue directe sur l'océan.</p>
+                        <div class="equipements-chambre">
+                            <span class="equipement-chambre">Climatisation</span>
+                            <span class="equipement-chambre">TV écran plat</span>
+                            <span class="equipement-chambre">Mini-bar</span>
+                            <span class="equipement-chambre">Coffre-fort</span>
+                        </div>
+                        <a href="#" class="bouton-chambre">Voir plus</a>
+                    </div>
+                </div>
+                
+                <div class="chambre">
+                    <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Chambre Jardin" class="image-chambre" loading="lazy" width="1350" height="900">
+                    <div class="details-chambre">
+                        <h3 class="titre-chambre">Chambre Jardin</h3>
+                        <p class="description-chambre">25m² avec lit queen size et salle de bain attenante. Accès privé à la terrasse ombragée et au jardin tropical.</p>
+                        <div class="equipements-chambre">
+                            <span class="equipement-chambre">Climatisation</span>
+                            <span class="equipement-chambre">TV écran plat</span>
+                            <span class="equipement-chambre">Bureau</span>
+                        </div>
+                        <a href="#" class="bouton-chambre">Voir plus</a>
+                    </div>
+                </div>
+                
+                <div class="chambre">
+                    <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Chambre Piscine" class="image-chambre" loading="lazy" width="1350" height="900">
+                    <div class="details-chambre">
+                        <h3 class="titre-chambre">Chambre Piscine</h3>
+                        <p class="description-chambre">28m² avec deux lits jumeaux ou un lit king size. Accès direct à la piscine et salle de bain avec douche extérieure.</p>
+                        <div class="equipements-chambre">
+                            <span class="equipement-chambre">Climatisation</span>
+                            <span class="equipement-chambre">TV écran plat</span>
+                            <span class="equipement-chambre">Terrasse privée</span>
+                        </div>
+                        <a href="#" class="bouton-chambre">Voir plus</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Cuisine -->
+    <section class="section-cuisine">
+        <div class="conteneur">
+            <h2 class="titre-section">CUISINE & SALLE À MANGER</h2>
+            
+            <div class="contenu-cuisine">
+                <div class="galerie-cuisine">
+                    <img src="https://images.unsplash.com/photo-1600121848594-d8644e57abab?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Bar extérieur" class="image-cuisine" loading="lazy" width="1350" height="900">
+                    <img src="https://images.unsplash.com/photo-1600121848594-d8644e57abab?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Bar extérieur" class="image-cuisine" loading="lazy" width="1350" height="900">
+                    <img src="https://images.unsplash.com/photo-1600121848594-d8644e57abab?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Bar extérieur" class="image-cuisine" loading="lazy" width="1350" height="900">
+                    <img src="https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Salle à manger" class="image-cuisine principale" loading="lazy" width="1350" height="900">
+                </div>
+                
+                <div class="texte-cuisine">
+                    <p>Notre cuisine entièrement équipée par Bulthaup est un paradis pour les amateurs de gastronomie. Avec ses plans de travail en pierre naturelle et ses appareils haut de gamme (four vapeur, réfrigérateur wine cooler, plaque à induction), elle permet de préparer des repas d'exception.</p>
+                    
+                    <p>La salle à manger principale peut accueillir 12 personnes autour d'une table en teck massif. Pour les dîners plus intimes, le coin repas extérieur sous la véranda offre une ambiance romantique avec vue sur l'océan.</p>
+                    
+                    <p>Notre chef personnel peut préparer pour vous des plats traditionnels sénégalais ou une cuisine internationale raffinée, selon vos envies.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Espaces -->
+    <section class="section-espaces">
+        <div class="conteneur">
+            <h2 class="titre-section">ESPACES EXTÉRIEURS</h2>
+            
+            <div class="grille-espaces">
+                <div class="espace">
+                    <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Piscine Infinity" class="image-espace" loading="lazy" width="1350" height="900">
+                    <div class="overlay-espace">
+                        <h3 class="titre-espace">Piscine Infinity</h3>
+                        <p>18m avec vue sur l'océan, éclairée le soir</p>
+                    </div>
+                </div>
+                
+                <div class="espace">
+                    <img src="https://images.unsplash.com/photo-1584132967334-10e028bd69f7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Jardin Tropical" class="image-espace" loading="lazy" width="1350" height="900">
+                    <div class="overlay-espace">
+                        <h3 class="titre-espace">Jardin Tropical</h3>
+                        <p>2500m² de végétation luxuriante et d'essences locales</p>
+                    </div>
+                </div>
+                
+                <div class="espace">
+                    <img src="https://images.unsplash.com/photo-1565538810643-b5bdb714032a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Terrasse Panoramique" class="image-espace" loading="lazy" width="1350" height="900">
+                    <div class="overlay-espace">
+                        <h3 class="titre-espace">Terrasse Panoramique</h3>
+                        <p>Espace détente avec lounge et bar extérieur</p>
+                    </div>
+                </div>
+                
+                <div class="espace">
+                    <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Plage Privée" class="image-espace" loading="lazy" width="1350" height="900">
+                    <div class="overlay-espace">
+                        <h3 class="titre-espace">Plage Privée</h3>
+                        <p>Accès direct à une crique de sable fin préservée</p>
+                    </div>
+                </div>
+                
+                <div class="espace">
+                    <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Espace Spa" class="image-espace" loading="lazy" width="1350" height="900">
+                    <div class="overlay-espace">
+                        <h3 class="titre-espace">Espace Spa</h3>
+                        <p>Massages et soins en plein air sous les palmes</p>
+                    </div>
+                </div>
+                
+                <div class="espace">
+                    <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Espace Sport" class="image-espace" loading="lazy" width="1350" height="900">
+                    <div class="overlay-espace">
+                        <h3 class="titre-espace">Espace Sport</h3>
+                        <p>Yoga, fitness et sports nautiques inclus</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="pied-page">
+        <div class="conteneur">
+            <div class="logo-footer">Villa Azur</div>
+            
+            <ul class="menu-footer">
+                <li><a href="index.html" class="lien-footer">Accueil</a></li>
+                <li><a href="villa.html" class="lien-footer">La Villa</a></li>
+                <li><a href="galerie.html" class="lien-footer">Galerie</a></li>
+                <li><a href="service.html" class="lien-footer">Services</a></li>
+                <li><a href="tarifs.html" class="lien-footer">Tarifs</a></li>
+                <li><a href="contact.html" class="lien-footer">Contact</a></li>
+                <li><a href="mentions-legales.html" class="lien-footer">Mentions légales</a></li>
+            </ul>
+            
+            <div class="copyright">
+                &copy; 2023 Villa Azur Cap Skirring - Tous droits réservés
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuHamburger = document.getElementById('menuHamburger');
+            const navMobile = document.getElementById('navMobile');
+            const overlay = document.getElementById('overlay');
+            const header = document.getElementById('header');
+
+            // Gestion du menu mobile
+            menuHamburger.addEventListener('click', toggleMenu);
+            overlay.addEventListener('click', closeMenu);
+
+            // Gestion du scroll
+            window.addEventListener('scroll', function() {
+                header.classList.toggle('scroll', window.scrollY > 50);
+            });
+
+            function toggleMenu() {
+                menuHamburger.classList.toggle('open');
+                navMobile.classList.toggle('open');
+                overlay.classList.toggle('open');
+                document.body.classList.toggle('no-scroll');
+            }
+
+            function closeMenu() {
+                menuHamburger.classList.remove('open');
+                navMobile.classList.remove('open');
+                overlay.classList.remove('open');
+                document.body.classList.remove('no-scroll');
+            }
+        });
+    </script>
+</body>
+</html>
