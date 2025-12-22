@@ -1,13 +1,11 @@
-<style>
     :root {
-        --bleu-fonce: #0d2b4e;
-        --bleu-clair: #3a7bc8;
-        --sable: #e6d5b8;
-        --blanc: #f8f8f8;
-        --noir: #1a1a1a;
-        --taupe: #b8a98a;
-    }
-
+    --bleu-fonce: #0d2b4e;
+    --bleu-clair: #3a7bc8;
+    --sable: #e6d5b8;
+    --blanc: #f8f8f8;
+    --noir: #1a1a1a;
+    --taupe: #b8a98a;
+}
     * {
         margin: 0;
         padding: 0;
@@ -36,7 +34,7 @@
     /* En-tête */
     .en-tete {
         background: rgba(255, 255, 255, 0.9);
-        padding: 20px 0;
+        padding: 10px 0;
         position: fixed;
         width: 100%;
         top: 0;
@@ -228,8 +226,8 @@
 
     /* Section héro */
     .section-hero {
-        margin-top: 80px;
-        padding: 100px 0 80px;
+        margin-top: auto;
+       
         position: relative;
         background: linear-gradient(rgba(26, 58, 95, 0.7), rgba(26, 58, 95, 0.3)), 
                     url('https://images.unsplash.com/photo-1584132967334-10e028bd69f7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
@@ -237,7 +235,7 @@
         background-position: center;
         color: var(--blanc);
         height: 100vh;
-        min-height: 700px;
+        min-height: AUTO;
         display: flex;
         align-items: center;
     }
@@ -580,9 +578,10 @@
     }
 
     /* Responsive */
+
     @media (max-width: 1200px) {
         .titre-principal {
-            font-size: 4rem;
+            font-size: 2rem;
         }
     }
 
