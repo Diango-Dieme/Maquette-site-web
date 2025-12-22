@@ -234,7 +234,7 @@ body {
     background-size: cover;
     background-position: center;
     color: var(--blanc);
-    height: 100vh; /* Plein écran */
+    height: 98vh; /* Plein écran */
     display: flex;
     align-items: center;    /* Centrage vertical */
     justify-content: center; /* Centrage horizontal */
